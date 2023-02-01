@@ -31,7 +31,7 @@ namespace TicTacToe
         {
             Console.WriteLine(komunikat);
             int odp;
-            while (!int.TryParse(Console.ReadLine(), out odp) || odp < 2)
+            while (!int.TryParse(Console.ReadLine(), out odp))
             {
                 Console.WriteLine("Wystąpił błąd. Proszę spróbować ponownie: ");
             }
