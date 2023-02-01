@@ -12,41 +12,98 @@ namespace TicTacToe
     {
         static void Main(string[] args)
         {
-            ZasadyGry zasady = ZasadyGry.UstawZasady();
-            string[,] plansza = new string[zasady.wiersze, zasady.kolumny];
-            WyswietlPlansze(plansza);
-        }
-        public static string PobierzString(string komunikat)
-        {
-            Console.WriteLine(komunikat);
-            string odp = Console.ReadLine();
-            while (odp == null)
+            bool gameOn = true;
+            while (gameOn)
             {
-                Console.Write("Wystąpił błąd, proszę spróbować ponownie: ");
-                odp = Console.ReadLine();
+
+                ZasadyGry zasady = ZasadyGry.UstawZasady();
+                string[,] plansza = new string[zasady.wiersze, zasady.kolumny];
+                UzupelnijPlansze(plansza);
+                Player gracz1 = Player.StworzGracza(1);
+                Player gracz2 = Player.StworzGracza(2);
+                int iloscTur = zasady.wiersze * zasady.kolumny;
+                Player aktualnyGracz;
+                int tura = 1;
+                for (int i = 0; i < iloscTur; i++)
+                {
+                    if (tura % 2 == 0)
+                    {
+                        aktualnyGracz = gracz2;
+                    }
+                    else
+                    {
+                        aktualnyGracz = gracz1;
+                    }
+                    Console.WriteLine($"Tura gracza {aktualnyGracz.imie}\n");
+                    int wiersz = Silnik.PobierzInt("Podaj wiersz ") - 1;
+                    int kolumna = Silnik.PobierzInt("Podaj kolumnę ") - 1;
+                    while (!Silnik.CzyMoznaWykonacRuch(wiersz, kolumna, plansza))
+                    {
+                        Console.WriteLine("Proszę podać inne koordynaty");
+                        wiersz = Silnik.PobierzInt("Podaj wiersz ") - 1;
+                        kolumna = Silnik.PobierzInt("Podaj kolumnę ") - 1;
+                    }
+                    plansza[wiersz, kolumna] = aktualnyGracz.symbol;
+                    if (Silnik.SprawdzWygrana(wiersz, kolumna, plansza, aktualnyGracz, zasady.seriaDoWygranej))
+                    {
+                        break;
+                    }
+                    else
+                    {
+                        tura++;
+                    }
+                    Console.Clear();
+                    WyswietlPlansze(plansza);
+                }
+                Console.WriteLine("KONIEC GRY!!! ");
+                gameOn = CzyChceszZagracPonownie();
+                Console.Clear();
             }
-            return odp;
+
         }
-        public static int PobierzInt(string komunikat)
-        {
-            Console.WriteLine(komunikat);
-            int odp;
-            while (!int.TryParse(Console.ReadLine(), out odp))
-            {
-                Console.WriteLine("Wystąpił błąd. Proszę spróbować ponownie: ");
-            }
-            return odp;
-        }
-        static void WyswietlPlansze(string[,] plansza)
+        public static void UzupelnijPlansze(string[,] plansza)
         {
             for (int i = 0; i < plansza.GetLength(0); i++)
             {
                 for (int j = 0; j < plansza.GetLength(1); j++)
                 {
-                    Console.Write($"[{plansza[i,j]}]");
+                    plansza[i, j] = " ";
+                }
+            }
+        }
+        public static void WyswietlPlansze(string[,] plansza)
+        {
+            for (int i = 0; i < plansza.GetLength(0); i++)
+            {
+                for (int j = 0; j < plansza.GetLength(1); j++)
+                {
+                    Console.Write($"[{plansza[i, j]}]");
                 }
                 Console.WriteLine();
             }
         }
+        static bool CzyChceszZagracPonownie()
+        {
+            Console.WriteLine("Czy chcesz zagrać ponownie? (t/n): ");
+            string odp = Console.ReadLine();
+            while (true)
+            {
+                if (odp == "t")
+                {
+                    return true;
+                }
+                else if (odp == "n")
+                {
+                    return false;
+                }
+                else
+                {
+                    Console.WriteLine("Nieodpowienie wyrażenie, proszę spróbować ponownie (t/n): ");
+                    odp = Console.ReadLine();
+                }
+            }
+        }
+
+
     }
 }

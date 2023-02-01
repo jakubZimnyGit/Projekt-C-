@@ -15,10 +15,10 @@ namespace TicTacToe
         public static ZasadyGry UstawZasady()
         {
             ZasadyGry zasady = new ZasadyGry();
-            Console.WriteLine("Ustawienia planszy: ");
-            zasady.wiersze = Program.PobierzInt("Podaj liczbę wierszy (min. 2): ");
-            zasady.kolumny = Program.PobierzInt("Podaj liczbę kolumn (min. 2): ");
-            zasady.seriaDoWygranej = Program.PobierzInt("Podaj warunek zwycięstwa (min. 2): ");
+            Console.WriteLine("*Ustawienia planszy*\n");
+            zasady.wiersze = Silnik.PobierzInt("Podaj liczbę wierszy: ");
+            zasady.kolumny = Silnik.PobierzInt("Podaj liczbę kolumn: ");
+            zasady.seriaDoWygranej = Silnik.PobierzInt("Podaj warunek zwycięstwa: ");
             return zasady;   
         }
     }

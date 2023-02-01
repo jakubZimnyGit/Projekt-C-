@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -33,7 +34,7 @@ namespace TicTacToe
         {
             try
             {
-                if (plansza[wiersz,kolumna] == null)
+                if (plansza[wiersz,kolumna] == " ")
                 {
                     return true;
                 }
@@ -165,6 +166,47 @@ namespace TicTacToe
             return symbole.ToArray();
 
 
+        }
+        static bool SprawdzWarunkiWygranej(string[] symbolePobraneZPlanszy, Player gracz, int SeriaPunktowDoWygranej)
+        {
+            int warunek = SeriaPunktowDoWygranej;
+            int wynik = 0;
+            for (int i = 0; i < symbolePobraneZPlanszy.GetLength(0); i++)
+            {
+                if (symbolePobraneZPlanszy[i] == gracz.symbol)
+                {
+                    wynik++;
+                    if (wynik == warunek)
+                    {
+                        return true;
+                    }
+                }
+                else
+                {
+                    wynik = 0;
+                }
+
+            }
+            return false;
+
+
+        }
+        public static bool SprawdzWygrana(int wiersz, int kolumna, string[,] plansza, Player gracz, int SeriaDoWygranej)
+        {
+            if (SprawdzWarunkiWygranej(PobierzZlewejDoPrawej(wiersz, kolumna, plansza, SeriaDoWygranej), gracz, SeriaDoWygranej) ||
+                SprawdzWarunkiWygranej(PobierzZprawejDoLewej(wiersz, kolumna, plansza, SeriaDoWygranej), gracz, SeriaDoWygranej) ||
+                SprawdzWarunkiWygranej(PobierzPionowo(wiersz, kolumna, plansza, SeriaDoWygranej), gracz, SeriaDoWygranej) ||
+                SprawdzWarunkiWygranej(PobierzPoziomo(wiersz, kolumna, plansza, SeriaDoWygranej), gracz, SeriaDoWygranej))
+            {
+                Console.Clear();
+                Program.WyswietlPlansze(plansza);
+                Console.WriteLine($"Zwyciężył gracz {gracz.imie}!");
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
 
     }
