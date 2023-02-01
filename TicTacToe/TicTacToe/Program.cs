@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data.Odbc;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -11,10 +12,11 @@ namespace TicTacToe
     {
         static void Main(string[] args)
         {
-            int x = PobierzInt("Podaj dowolny nr: ");
-            Console.WriteLine(x);
+            ZasadyGry zasady = ZasadyGry.UstawZasady();
+            string[,] plansza = new string[zasady.wiersze, zasady.kolumny];
+            WyswietlPlansze(plansza);
         }
-        static string PobierzString(string komunikat)
+        public static string PobierzString(string komunikat)
         {
             Console.WriteLine(komunikat);
             string odp = Console.ReadLine();
@@ -25,15 +27,26 @@ namespace TicTacToe
             }
             return odp;
         }
-        static int PobierzInt(string komunikat)
+        public static int PobierzInt(string komunikat)
         {
             Console.WriteLine(komunikat);
             int odp;
-            while (!int.TryParse(Console.ReadLine(), out odp))
+            while (!int.TryParse(Console.ReadLine(), out odp) || odp < 2)
             {
                 Console.WriteLine("Wystąpił błąd. Proszę spróbować ponownie: ");
             }
             return odp;
+        }
+        static void WyswietlPlansze(string[,] plansza)
+        {
+            for (int i = 0; i < plansza.GetLength(0); i++)
+            {
+                for (int j = 0; j < plansza.GetLength(1); j++)
+                {
+                    Console.Write($"[{plansza[i,j]}]");
+                }
+                Console.WriteLine();
+            }
         }
     }
 }

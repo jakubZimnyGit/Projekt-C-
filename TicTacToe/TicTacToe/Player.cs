@@ -10,5 +10,13 @@ namespace TicTacToe
     {
         public string imie { get; set; }
         public string symbol { get; set; }
+
+        public static Player StworzGracza(int nrGracza)
+        {
+            Player gracz = new Player();
+            gracz.imie = Program.PobierzString($"Gracz nr {nrGracza}, podaj imię: ");
+            gracz.symbol = Program.PobierzString($"Gracz nr {nrGracza}, podaj symbol: ");
+            return gracz;  
+        }
     }
 }
