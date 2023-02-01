@@ -1,1 +1,1 @@
-# Projekty WSB
+# Projekty WSB/Nauka Git
