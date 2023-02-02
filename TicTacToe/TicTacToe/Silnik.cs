@@ -9,7 +9,7 @@ namespace TicTacToe
 {
     internal class Silnik
     {
-        public static string PobierzString(string komunikat)
+        public static string PobierzString(string komunikat)        //funkcja pomocnicza
         {
             Console.WriteLine(komunikat);
             string odp = Console.ReadLine();
@@ -20,7 +20,7 @@ namespace TicTacToe
             }
             return odp;
         }
-        public static int PobierzInt(string komunikat)
+        public static int PobierzInt(string komunikat)             //funkcja pomocnicza
         {
             Console.WriteLine(komunikat);
             int odp;
@@ -30,8 +30,8 @@ namespace TicTacToe
             }
             return odp;
         }
-        public static bool CzyMoznaWykonacRuch(int wiersz, int kolumna, string[,] plansza)
-        {
+        public static bool CzyMoznaWykonacRuch(int wiersz, int kolumna, string[,] plansza)      //Funkcja sprawdza, czy podane przez użytkownika koordynaty (wiersz, kolumna)
+        {                                                                                       //nie są zajętę przez innego gracza, oraz czy mieszczą się w zakresie planszy.
             try
             {
                 if (plansza[wiersz,kolumna] == " ")
@@ -45,8 +45,8 @@ namespace TicTacToe
             }
             catch { return false; }
         }
-        static string[] PobierzZlewejDoPrawej(int wiersz, int kolumna, string[,] plansza, int SeriaDoWygranej)
-        {
+        static string[] PobierzZlewejDoPrawej(int wiersz, int kolumna, string[,] plansza, int SeriaDoWygranej)  //Cztery poniższe funkcje pobierają podaną ilość znaków (seriaDoWygranej)
+        {                                                                                                       //w każdym kierunku od miejsca w którym gracz wykonał ruch (pion, poziom oraz ukosy))
 
             int wierszStart = wiersz - (SeriaDoWygranej - 1);
             int wierszKoniec = wiersz + SeriaDoWygranej; 
@@ -71,7 +71,7 @@ namespace TicTacToe
                 }
                 kolumna++;
             }
-            string[] symbolkiTest = symbole.ToArray();
+            //string[] symbolkiTest = symbole.ToArray();
 
             /* foreach (string symbolek in symbolkiTest)   Użyte do sprawdzenia działania funkcji. Pobierane symbole zostają wyświetlane na ekranie konsoli
              {                                             dzięki czemu można łatwiej wychwycić błędy i skorygować działanie algorytmu.   
@@ -107,7 +107,7 @@ namespace TicTacToe
                 }
                 kolumna--;
             }
-            string[] symbolkiTest = symbole.ToArray();
+            //string[] symbolkiTest = symbole.ToArray();
             /*
             foreach (string symbolek in symbolkiTest)
             {
@@ -168,15 +168,14 @@ namespace TicTacToe
 
         }
         static bool SprawdzWarunkiWygranej(string[] symbolePobraneZPlanszy, Player gracz, int SeriaPunktowDoWygranej)
-        {
-            int warunek = SeriaPunktowDoWygranej;
-            int wynik = 0;
-            for (int i = 0; i < symbolePobraneZPlanszy.GetLength(0); i++)
-            {
+        {                                                                           //Powyższe funkcje zwracają tablice symboli, ta funkcja używa owych tablic,
+            int wynik = 0;                                                          //aby sprawdzić czy ilość postawionych przez użytkownika znaków "pod rząd"
+            for (int i = 0; i < symbolePobraneZPlanszy.GetLength(0); i++)           // jest równa "SeriiPunktowDoWygranej".                                                                             
+            {                                                                       
                 if (symbolePobraneZPlanszy[i] == gracz.symbol)
                 {
                     wynik++;
-                    if (wynik == warunek)
+                    if (wynik == SeriaPunktowDoWygranej)
                     {
                         return true;
                     }
@@ -191,8 +190,8 @@ namespace TicTacToe
 
 
         }
-        public static bool SprawdzWygrana(int wiersz, int kolumna, string[,] plansza, Player gracz, int SeriaDoWygranej)
-        {
+        public static bool SprawdzWygrana(int wiersz, int kolumna, string[,] plansza, Player gracz, int SeriaDoWygranej)       //Fukncja sprawdza po kolei każdy z przypadków 
+        {                                                                                                                      //w których gracz mógłby zwyciężyć.
             if (SprawdzWarunkiWygranej(PobierzZlewejDoPrawej(wiersz, kolumna, plansza, SeriaDoWygranej), gracz, SeriaDoWygranej) ||
                 SprawdzWarunkiWygranej(PobierzZprawejDoLewej(wiersz, kolumna, plansza, SeriaDoWygranej), gracz, SeriaDoWygranej) ||
                 SprawdzWarunkiWygranej(PobierzPionowo(wiersz, kolumna, plansza, SeriaDoWygranej), gracz, SeriaDoWygranej) ||

@@ -12,7 +12,7 @@ namespace TicTacToe
         public int kolumny { get; set; }
         public int seriaDoWygranej { get; set; }
 
-        public static ZasadyGry UstawZasady()
+        public static ZasadyGry UstawZasady()       //Funckcja ma za zadanie ułatwić inicjalizowanie obiektu typu ZasadyGry.
         {
             ZasadyGry zasady = new ZasadyGry();
             Console.WriteLine("*Ustawienia planszy*\n");

@@ -11,7 +11,7 @@ namespace TicTacToe
         public string imie { get; set; }
         public string symbol { get; set; }
 
-        public static Player StworzGracza(int nrGracza)
+        public static Player StworzGracza(int nrGracza)     //Funkcja służąca do inicjowania obiektu typu gracz
         {
             Console.Clear();
             Player gracz = new Player();

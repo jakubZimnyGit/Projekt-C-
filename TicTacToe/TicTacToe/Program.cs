@@ -61,7 +61,7 @@ namespace TicTacToe
             }
 
         }
-        public static void UzupelnijPlansze(string[,] plansza)
+        public static void UzupelnijPlansze(string[,] plansza)      
         {
             for (int i = 0; i < plansza.GetLength(0); i++)
             {
