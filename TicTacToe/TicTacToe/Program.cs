@@ -16,14 +16,15 @@ namespace TicTacToe
             while (gameOn)
             {
 
-                ZasadyGry zasady = ZasadyGry.UstawZasady();
+                ZasadyGry zasady = new ZasadyGry();
                 string[,] plansza = new string[zasady.wiersze, zasady.kolumny];
                 UzupelnijPlansze(plansza);
-                Player gracz1 = Player.StworzGracza(1);
-                Player gracz2 = Player.StworzGracza(2);
+                Player gracz1 = new Player(1);
+                Player gracz2 = new Player(2);
                 int iloscTur = zasady.wiersze * zasady.kolumny;
                 Player aktualnyGracz;
                 int tura = 1;
+                WyswietlPlansze(plansza);
                 for (int i = 0; i < iloscTur; i++)
                 {
                     if (tura % 2 == 0)
