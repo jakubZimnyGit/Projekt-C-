@@ -56,6 +56,7 @@ namespace KalkulatorWinforms
         {
             tbResult.Text = "0";
             commaPlaced = false;
+            SetOperationBtnState(true);
         }
 
         private void OnCommaBtnClick(object sender, EventArgs e)
@@ -69,6 +70,10 @@ namespace KalkulatorWinforms
             {
                 tbResult.Text += ".";
                 commaPlaced = true;
+            }
+            if (currentOperation != Operation.None)
+            {
+                secondNumber += ".";
             }
         }
 
@@ -94,6 +99,7 @@ namespace KalkulatorWinforms
 
             tbResult.Text += operation;
             SetOperationBtnState(false);
+            commaPlaced = false;
             
         }
         void SetOperationBtnState(bool Value)
