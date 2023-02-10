@@ -176,9 +176,9 @@
             this.btnDot.Name = "btnDot";
             this.btnDot.Size = new System.Drawing.Size(53, 53);
             this.btnDot.TabIndex = 11;
-            this.btnDot.Text = ",";
+            this.btnDot.Text = ".";
             this.btnDot.UseVisualStyleBackColor = true;
-            this.btnDot.Click += new System.EventHandler(this.OnNumberBtnClick);
+            this.btnDot.Click += new System.EventHandler(this.OnCommaBtnClick);
             // 
             // btnAdd
             // 
@@ -189,6 +189,7 @@
             this.btnAdd.TabIndex = 12;
             this.btnAdd.Text = "+";
             this.btnAdd.UseVisualStyleBackColor = true;
+            this.btnAdd.Click += new System.EventHandler(this.OnOperationBtnClick);
             // 
             // btnSubstract
             // 
@@ -199,6 +200,7 @@
             this.btnSubstract.TabIndex = 13;
             this.btnSubstract.Text = "-";
             this.btnSubstract.UseVisualStyleBackColor = true;
+            this.btnSubstract.Click += new System.EventHandler(this.OnOperationBtnClick);
             // 
             // btnDivide
             // 
@@ -209,16 +211,18 @@
             this.btnDivide.TabIndex = 14;
             this.btnDivide.Text = "÷";
             this.btnDivide.UseVisualStyleBackColor = true;
+            this.btnDivide.Click += new System.EventHandler(this.OnOperationBtnClick);
             // 
             // btnMultiply
             // 
-            this.btnMultiply.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.btnMultiply.Font = new System.Drawing.Font("Microsoft Sans Serif", 21.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
             this.btnMultiply.Location = new System.Drawing.Point(273, 202);
             this.btnMultiply.Name = "btnMultiply";
             this.btnMultiply.Size = new System.Drawing.Size(133, 53);
             this.btnMultiply.TabIndex = 15;
-            this.btnMultiply.Text = "X";
+            this.btnMultiply.Text = "x";
             this.btnMultiply.UseVisualStyleBackColor = true;
+            this.btnMultiply.Click += new System.EventHandler(this.OnOperationBtnClick);
             // 
             // btnResult
             // 
@@ -229,6 +233,7 @@
             this.btnResult.TabIndex = 16;
             this.btnResult.Text = "=";
             this.btnResult.UseVisualStyleBackColor = true;
+            this.btnResult.Click += new System.EventHandler(this.btnResult_Click);
             // 
             // tbResult
             // 
