@@ -18,7 +18,7 @@ namespace KalkulatorWinforms
             Addition,
             Substraction,
             Multiplication,
-            Dividion
+            Division
         }
 
         private bool commaPlaced = false;
@@ -93,7 +93,7 @@ namespace KalkulatorWinforms
                     currentOperation = Operation.Multiplication;
                     break;
                 case "÷":
-                    currentOperation = Operation.Dividion;
+                    currentOperation = Operation.Division;
                     break;
             }
 
@@ -133,7 +133,7 @@ namespace KalkulatorWinforms
                     return firstNumber - secondNumber;
                 case Operation.Multiplication:
                     return firstNumber * secondNumber;
-                case Operation.Dividion:
+                case Operation.Division:
                     if (secondNumber == 0)
                     {
                         return 0;
