@@ -8,9 +8,11 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
+
+
 namespace KalkulatorWinforms
 {
-    public partial class Form1 : Form
+    public partial class Kalkulator : Form
     {
         public enum Operation
         {
@@ -26,7 +28,7 @@ namespace KalkulatorWinforms
         private string secondNumber;
         private Operation currentOperation = Operation.None;
         private bool isResultOnTheScreen = false;
-        public Form1()
+        public Kalkulator()
         {
             InitializeComponent();
             tbResult.Text = "0";
@@ -125,21 +127,18 @@ namespace KalkulatorWinforms
         }
         private double Calculate(double firstNumber, double secondNumber)
         {
-            switch (currentOperation)
-            {
-                case Operation.Addition:
-                    return firstNumber + secondNumber;
-                case Operation.Substraction:
-                    return firstNumber - secondNumber;
-                case Operation.Multiplication:
-                    return firstNumber * secondNumber;
-                case Operation.Division:
-                    if (secondNumber == 0)
-                    {
-                        return 0;
-                    }
-                    return firstNumber / secondNumber;
-            }
+            Calculations calculations = new Calculations();
+                switch (currentOperation)
+                {
+                    case Operation.Addition:
+                        return calculations.Addition(firstNumber, secondNumber);
+                    case Operation.Substraction:
+                        return calculations.Substraction(firstNumber, secondNumber);
+                    case Operation.Multiplication:
+                        return calculations.Multiplication(firstNumber, secondNumber);
+                    case Operation.Division:
+                        return calculations.Division(firstNumber, secondNumber);
+                }
             return 0;
         }
     }
