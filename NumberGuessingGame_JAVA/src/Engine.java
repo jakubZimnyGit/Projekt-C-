@@ -1,10 +1,15 @@
+import javax.management.StringValueExp;
+import java.util.Map;
 import java.util.Random;
 import java.util.Scanner;
+import java.util.HashMap;
 
 public class Engine {
-    private int score;      // game will have its own score
+    public int score;      // game will have its own score
     private Player player;  // there will be one player at the time, so he is also the game's property
     private final int[] range;    // range of numbers, it's an array so the first number range[0] can be min and the second number range[1] is max
+    HashMap<String, String> playerStats = new HashMap<String, String >();
+
 
     public Engine(){
         this.score = 0;             // score is counting player's guesses, so it has to be 0 at the start of the game
@@ -30,7 +35,10 @@ public class Engine {
         Message("Enter your nickname: ");          // If he is, then the function "File_Management.GetData" will return the player object we are looking for
         String nick = scanner.nextLine();         // so we will have access to his best score
         this.player = new Player(nick);
-        return File_Management.GetData(this.player);
+        playerStats = File_Management.loadPlayerStats(player);
+        loadPlayer(player, playerStats);
+        playerStats = loadPlayer(player, playerStats);
+        return player;
     }
 
     void mainMenu(){
@@ -73,6 +81,22 @@ public class Engine {
 
         }
     }
+
+    void updatePlayerStats(HashMap<String, String> playerStats){
+        playerStats.remove("score");
+        playerStats.put("score", String.valueOf(score));
+    }
+
+    HashMap<String, String> loadPlayer(Player player, HashMap<String, String> playerStats){
+        if (playerStats == null){
+            playerStats = new HashMap<>();
+            playerStats.put("name", player.nickName);
+            playerStats.put("score", player.PersonalBest.toString());
+            return playerStats;
+        }
+        player.PersonalBest = Integer.parseInt(playerStats.get("score"));
+        return playerStats;
+    }
     void game() {
 
         Random rdm = new Random();      //Random type object allows us to pick random number for the player to guess
@@ -99,11 +123,12 @@ public class Engine {
             Message("Congratulations!");
             if (score < player.PersonalBest) {
                 Message("NEW BEST!!! ---> " + score);
-                File_Management.ChangeScore(player, score);
+                File_Management.SavePlayer(playerStats, player);
             } else if (player.PersonalBest == 0) {
                 Message("NEW BEST!!! ---> " + score);
                 player.PersonalBest = score;
-                File_Management.SaveData(player);
+                updatePlayerStats(playerStats);
+                File_Management.SavePlayer(playerStats, player);
             } else {
                 Message("score ---> " + score);
             }
