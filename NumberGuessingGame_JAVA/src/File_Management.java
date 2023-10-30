@@ -5,16 +5,16 @@ import java.io.BufferedWriter;
 
 public class File_Management {      //Class that handles all operations on files
 
-    static void SavePlayer(HashMap<String,String> playerStats, Player player) {     //saving player's nickname to file
+    static void SavePlayer(Player player, String path) {     //saving player's nickname to file
         BufferedWriter writer;
-        File file = new File("./Players/" + player.nickName + ".txt");
+        File file = new File("./" + path + "/" + player.nickName + ".txt");
         try {
 
             // create new BufferedWriter for the output file
             writer = new BufferedWriter(new FileWriter(file));
 
             // iterate map entries
-            for (Map.Entry<String, String> entry : playerStats.entrySet()) {
+            for (Map.Entry<String, String> entry : player.PlayerStats.entrySet()) {
                 writer.write(entry.getKey() + ":" + entry.getValue());
                 writer.newLine();
             }
@@ -26,10 +26,10 @@ public class File_Management {      //Class that handles all operations on files
         }
     }
 
-    static HashMap<String,String> loadPlayerStats(Player player){
+    static HashMap<String,String> loadPlayerStats(Player player, String path){
         HashMap<String, String> playerStats = new HashMap<String, String>();
         BufferedReader reader;
-        File file = new File("./Players/" + player.nickName + ".txt");
+        File file = new File("./" + path + "/" + player.nickName + ".txt");
 
         if (file.exists()) {
             try {

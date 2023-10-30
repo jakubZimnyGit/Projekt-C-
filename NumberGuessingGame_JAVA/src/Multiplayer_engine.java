@@ -1,11 +1,13 @@
-import java.util.Random;
-import java.util.Scanner;
+import java.util.*;
+import java.util.HashMap;
 
 public class Multiplayer_engine {       //very similar to class engine
 
+    private final String path = "Multiplayer";
     private Player [] players;          // array of players object that are currently in the game
     private final int [] range;
     private  int numberToGuess;
+    private HashMap<String, String> playersStats;
 
     public Multiplayer_engine() {
         range = new int [2];
@@ -24,8 +26,20 @@ public class Multiplayer_engine {       //very similar to class engine
             Message("Pass nickname for player number " + (i+1));
             String PlayerNickname = scanner.nextLine();
             Player player = new Player(PlayerNickname);
-            this.players[i] = player;
+            this.players[i] = loadPlayer(player);
         }
+    }
+    Player loadPlayer(Player player){
+        player.PlayerStats = File_Management.loadPlayerStats(player, path);
+        if (player.PlayerStats == null){
+            player.PlayerStats = new HashMap<>();
+            return player;
+        }
+        player.Wins = Integer.parseInt(player.PlayerStats.get("Wins"));
+        player.Lost = Integer.parseInt(player.PlayerStats.get("Lost"));
+        player.GamesPlayed = Integer.parseInt(player.PlayerStats.get("GamesPlayed"));
+        player.WinRate = Double.parseDouble(player.PlayerStats.get("WinRate"));
+        return player;
     }
 
     void difficulty(){
@@ -47,6 +61,15 @@ public class Multiplayer_engine {       //very similar to class engine
 
         }
     }
+
+    void updatePlayerStats(Player player){
+        player.PlayerStats.put("name", player.nickName);
+        player.PlayerStats.put("Wins", player.Wins.toString());
+        player.PlayerStats.put("Lost", player.Lost.toString());
+        player.PlayerStats.put("GamesPlayed", player.GamesPlayed.toString());
+        player.PlayerStats.put("WinRate", player.WinRate.toString());
+    }
+
     Boolean GameOn() {
         Scanner scanner = new Scanner(System.in);
         Message("Continue?: \n1. Yes\n2. No");
@@ -72,27 +95,43 @@ public class Multiplayer_engine {       //very similar to class engine
                     int guess;
                     Message(player.nickName + " guess the number! (" + this.range[0] + " <---> " + this.range[1] + ")");
                     guess = scanner.nextInt();
-                    playersGuesses[i] = guess;
+                    int playerGuess = guess;
+                    win = checkWin(guess, player);
+                    if(win){
+                        break;
+                    }
                 }
-                win = checkWin(playersGuesses);     //if someone guess correctly, variable "win" will be set on true and loop will not continue
             }
             gameOn = GameOn();  //asks player if he wants to play again
         }
     }
 
-    boolean checkWin(int [] playersGuesses){        // function is using array that we created in function before, to display all the players guesses at the same time
+    boolean checkWin(int playerGuess, Player player){        // function is using array that we created in function before, to display all the players guesses at the same time
         boolean win = false;
-        for (int i = 0; i < playersGuesses.length; i++){
-            if (playersGuesses[i] > numberToGuess) {
-                Message(players[i].nickName + " Try lower number");
-            } else if (playersGuesses[i] < numberToGuess) {
-                Message(players[i].nickName + " Try bigger number");
+            if (playerGuess > numberToGuess) {
+                Message(player.nickName + " Try lower number");
+            } else if (playerGuess < numberToGuess) {
+                Message(player.nickName + " Try bigger number");
             }
             else {
-                Message("Congratulations " + players[i].nickName);
+                Message("Congratulations " + player.nickName);
+                player.GamesPlayed++;
+                player.Wins ++;
+                player.WinRate = ((Double.valueOf(player.Wins)/Double.valueOf(player.GamesPlayed) * 100));
+                updatePlayerStats(player);
+                File_Management.SavePlayer(player, path);
+                for (int i = 0; i < this.players.length; i++) {
+                    if (!Objects.equals(players[i].nickName, player.nickName)){
+                        players[i].Lost++;
+                        players[i].GamesPlayed++;
+                        players[i].WinRate = ((Double.valueOf(player.Wins)/Double.valueOf(player.GamesPlayed) * 100));
+                        updatePlayerStats(players[i]);
+                        File_Management.SavePlayer(players[i], path);
+                    }
+                }
                 win = true;
             }
-        }
+
         return win;
     }
 

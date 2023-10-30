@@ -5,10 +5,10 @@ import java.util.Scanner;
 import java.util.HashMap;
 
 public class Engine {
+    private final String path = "Singleplayer";
     public int score;      // game will have its own score
     private Player player;  // there will be one player at the time, so he is also the game's property
     private final int[] range;    // range of numbers, it's an array so the first number range[0] can be min and the second number range[1] is max
-    HashMap<String, String> playerStats = new HashMap<String, String >();
 
 
     public Engine(){
@@ -35,9 +35,7 @@ public class Engine {
         Message("Enter your nickname: ");          // If he is, then the function "File_Management.GetData" will return the player object we are looking for
         String nick = scanner.nextLine();         // so we will have access to his best score
         this.player = new Player(nick);
-        playerStats = File_Management.loadPlayerStats(player);
-        loadPlayer(player, playerStats);
-        playerStats = loadPlayer(player, playerStats);
+        loadPlayer(player);
         return player;
     }
 
@@ -46,7 +44,7 @@ public class Engine {
         this.player = LogIn();
         player.Greetings();
         Message("Your best score is " + this.player.PersonalBest);
-        Message("1. Singleplayer (play for your best score).\n2. Mutliplayer (Play locally with your friends.)\n3. exit the game.");
+        Message("1. Singleplayer (play for your best score).\n2. Mutliplayer (Play locally with your friends.)\n3. vs CPU.\n4. exit the game.");
         String choice = scanner.nextLine();
         switch (choice) {
             case "1":
@@ -59,12 +57,15 @@ public class Engine {
             case "3":
                 System.exit(0);
                 break;
+            case "4":
+                System.exit(0);
+                break;
         }
     }
 
     void difficulty(){
         Scanner scanner = new Scanner(System.in);
-        Message("Choose the difficulty: \n1. Standard\n2. Custom");
+        Message("Choose the difficulty: \n1. Easy\n1. Medium\n3. Hard\n4. Custom");
         String choice = scanner.nextLine();         //Standard difficulty is range from 1 to 100
         switch (choice){                        // Custom difficulty level lets player choose their range of numbers
             case "1":
@@ -72,6 +73,14 @@ public class Engine {
                 this.range[1] = 100;
                 break;
             case "2":
+                this.range[0] = 1;
+                this.range[1] = 10000;
+                break;
+            case "3":
+                this.range[0] = 1;
+                this.range[1] = 1000000;
+                break;
+            case "4":
                 Message("pick range: \nMinimum: " );
                 int min = Integer.parseInt(scanner.nextLine());
                 Message("pick range: \nMaximum: " );
@@ -87,15 +96,15 @@ public class Engine {
         playerStats.put("score", String.valueOf(score));
     }
 
-    HashMap<String, String> loadPlayer(Player player, HashMap<String, String> playerStats){
-        if (playerStats == null){
-            playerStats = new HashMap<>();
-            playerStats.put("name", player.nickName);
-            playerStats.put("score", player.PersonalBest.toString());
-            return playerStats;
+    void loadPlayer(Player player){
+        player.PlayerStats = File_Management.loadPlayerStats(player, path);
+        if (player.PlayerStats == null){
+            player.PlayerStats = new HashMap<>();
+            player.PlayerStats.put("name", player.nickName);
+            player.PlayerStats.put("score", player.PersonalBest.toString());
+
         }
-        player.PersonalBest = Integer.parseInt(playerStats.get("score"));
-        return playerStats;
+        player.PersonalBest = Integer.parseInt(player.PlayerStats.get("score"));
     }
     void game() {
 
@@ -123,12 +132,13 @@ public class Engine {
             Message("Congratulations!");
             if (score < player.PersonalBest) {
                 Message("NEW BEST!!! ---> " + score);
-                File_Management.SavePlayer(playerStats, player);
+                updatePlayerStats(player.PlayerStats);
+                File_Management.SavePlayer(player, path);
             } else if (player.PersonalBest == 0) {
                 Message("NEW BEST!!! ---> " + score);
                 player.PersonalBest = score;
-                updatePlayerStats(playerStats);
-                File_Management.SavePlayer(playerStats, player);
+                updatePlayerStats(player.PlayerStats);
+                File_Management.SavePlayer(player, path);
             } else {
                 Message("score ---> " + score);
             }
