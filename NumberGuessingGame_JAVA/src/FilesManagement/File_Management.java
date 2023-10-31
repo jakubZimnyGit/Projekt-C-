@@ -14,10 +14,8 @@ public class File_Management {      //Class that handles all operations on files
         File file = new File("./" + path + "/" + player.nickName + ".txt");
         try {
 
-            // create new BufferedWriter for the output file
             writer = new BufferedWriter(new FileWriter(file));
 
-            // iterate map entries
             for (Map.Entry<String, String> entry : player.PlayerStats.entrySet()) {
                 writer.write(entry.getKey() + ":" + entry.getValue());
                 writer.newLine();

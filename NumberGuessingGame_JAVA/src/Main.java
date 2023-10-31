@@ -9,16 +9,18 @@ import java.util.Scanner;
 public class Main {
 
     public static void main(String[] args) throws FileNotFoundException {
-        giereczka();
+        TheGame();
     }
 
-    static void giereczka(){
+    static void TheGame(){
         MainMenu();
     }
     static void MainMenu(){
-        Scanner scanner = new Scanner(System.in);
-        System.out.println("1. Singleplayer (play for your best score).\n2. Mutliplayer (Play locally with your friends.)\n3. vs CPU.\n4. exit the game.");
-        String choice = scanner.nextLine();
-        GameEngine.optionChoice(choice);
+        while(true) {
+            Scanner scanner = new Scanner(System.in);
+            System.out.println("1. Singleplayer (play for your best score).\n2. Mutliplayer (Play locally with your friends.)\n3. vs CPU.\n4. Tournament.\n5. exit the game.");
+            String choice = scanner.nextLine();
+            GameEngine.optionChoice(choice);
+        }
     }
 }

@@ -20,11 +20,7 @@ public class Singleplayer_Engine extends GameEngine{
         player.PlayerStats.put("score", player.PersonalBest.toString());
     }
 
-    public void SetupGame(){
-        playerWelcome();
-        difficulty();
-        player.RandomNumber(this.range);
-    }
+
     public void Game(){
         boolean gameOn = true;
         SetupGame();

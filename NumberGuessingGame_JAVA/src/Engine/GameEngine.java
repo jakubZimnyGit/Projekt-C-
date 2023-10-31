@@ -1,6 +1,10 @@
 package Engine;
 
+import java.io.File;
+import java.util.ArrayList;
 import java.util.Scanner;
+
+import FilesManagement.File_Management;
 import Models.*;
 public class GameEngine {
     protected Player player;
@@ -11,24 +15,9 @@ public class GameEngine {
 
 
 
-    void GetPlayers(){
-        Scanner scanner = new Scanner(System.in);
-        System.out.println("How many players?: ");
-        int numberOfPlayers = Integer.parseInt(scanner.nextLine());
-        this.players = new Player[numberOfPlayers];
-
-        for (int i = 0; i < numberOfPlayers; i++){
-            System.out.println("Pass nickname for player number " + (i+1));
-            String PlayerNickname = scanner.nextLine();
-            Player player = new Player();
-            player.nickName = PlayerNickname;
-            this.players[i] = player.loadMultiplayer(path);
-        }
-    }
-
     void difficulty() {
         Scanner scanner = new Scanner(System.in);
-        System.out.println("Choose the difficulty: \n1. Easy\n1. Medium\n3. Hard\n4. Custom");
+        System.out.println("Choose the difficulty: \n1. Easy\n2. Medium\n3. Hard\n4. Custom");
         String choice = scanner.nextLine();
         switch (choice) {
             case "1":
@@ -77,6 +66,7 @@ public class GameEngine {
                 break;
             case "2":
                 Multiplayer_engine Multi = new Multiplayer_engine();
+                Multi.Game();
                 break;
             case "3":
                 vsCPU vsProgram= new vsCPU();
@@ -85,6 +75,11 @@ public class GameEngine {
                 System.exit(0);
                 break;
         }
+    }
+    public void SetupGame(){
+        playerWelcome();
+        difficulty();
+        player.RandomNumber(this.range);
     }
     void updatePlayerStats(Player player){
         player.PlayerStats.put("name", player.nickName);
@@ -101,6 +96,22 @@ public class GameEngine {
             case "1" -> true;
             default -> false;
         };
+    }
+    public void updatePlayers(ArrayList<Player> playersAfterGame){
+        Player winner = playersAfterGame.get(0);
+        winner.Wins++;
+        winner.GamesPlayed++;
+        winner.WinRate = ((Double.valueOf(winner.Wins) / Double.valueOf(winner.GamesPlayed)) * 100);
+        for (int i = 1; i < playersAfterGame.size(); i++){
+            Player player = playersAfterGame.get(i);
+            player.Lost++;
+            player.GamesPlayed++;
+            player.WinRate = ((Double.valueOf(winner.Wins) / Double.valueOf(winner.GamesPlayed)) * 100);
+        }
+        for (Player player : playersAfterGame){
+            updatePlayerStats(player);
+            File_Management.SavePlayer(player, this.path);
+        }
     }
     public boolean PlayerGuessNumber(){
         System.out.println("Guess the number (" + range[0] + " <---> " + range[1] + ")");

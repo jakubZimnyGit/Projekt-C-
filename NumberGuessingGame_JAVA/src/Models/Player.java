@@ -78,21 +78,20 @@ public class Player {       //Models.Player class
             this.PlayerStats = new HashMap<>();
             this.PlayerStats.put("name", this.nickName);
             this.PlayerStats.put("score", this.PersonalBest.toString());
-
         }
         this.PersonalBest = Integer.parseInt(this.PlayerStats.get("score"));
     }
-    public Player loadMultiplayer(String path){
+    public void loadMultiplayer(String path){
         this.PlayerStats = File_Management.loadPlayerStats(this, path);
         if (this.PlayerStats == null){
             this.PlayerStats = new HashMap<>();
-            return this;
+            this.PlayerStats.put("name", this.nickName);
+            return;
         }
         this.Wins = Integer.parseInt(this.PlayerStats.get("Wins"));
         this.Lost = Integer.parseInt(this.PlayerStats.get("Lost"));
         this.GamesPlayed = Integer.parseInt(this.PlayerStats.get("GamesPlayed"));
         this.WinRate = Double.parseDouble(this.PlayerStats.get("WinRate"));
-        return this;
     }
 
 
