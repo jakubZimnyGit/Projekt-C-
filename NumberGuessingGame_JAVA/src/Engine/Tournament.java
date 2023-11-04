@@ -73,6 +73,7 @@ public class Tournament extends Multiplayer_engine {
                 someoneWon = WinnerOfTheRound(playersWhoGuessed);
                 displayScore();
             }
+            displayPodium(playersWhoGuessed);
             gameOn = GameEnd(playersWhoGuessed);
         }   
     }
@@ -137,5 +138,14 @@ public class Tournament extends Multiplayer_engine {
         else if (player.winStreak >= 1){
             player.nickName = leaderTitle + player.nickName;
         } 
+    }
+    public void displayPodium(ArrayList<Player> playersWhoGuessed){
+        try {
+            for (int i = 0; i < 3; i++){
+                System.out.println(i + 1 + ". Place --->  " + playersWhoGuessed.get(i).nickName);
+            }
+        } catch (Exception indexOutOfBoundsException) {
+            return;
+        }
     }
 }

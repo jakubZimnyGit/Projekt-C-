@@ -1,0 +1,5 @@
+Lost:0
+name:jakub
+winStreak:2
+Wins:2
+GamesPlayed:2
