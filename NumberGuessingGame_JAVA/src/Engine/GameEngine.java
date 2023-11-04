@@ -12,7 +12,7 @@ public class GameEngine {
     protected Player[] players;
     protected String path;
     protected int [] range = new int[2];
-    private String leaderTitle = "[LEADER]";
+    protected String leaderTitle = "[LEADER]";
 
 
     void difficulty() {
@@ -140,8 +140,8 @@ public class GameEngine {
     }
     public boolean IsLeader(Player player){  
         try {
-            System.out.println(player.nickName.substring(8,player.nickName.length()));
-            String substring = player.nickName.substring(0, 8);
+            System.out.println(player.nickName.substring(leaderTitle.length(),player.nickName.length()));
+            String substring = player.nickName.substring(0, leaderTitle.length());
            if (substring.equals(leaderTitle)){
             return true;
         } 

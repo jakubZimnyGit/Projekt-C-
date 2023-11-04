@@ -17,6 +17,7 @@ public class Tournament extends Multiplayer_engine {
 
     public Tournament(){
         this.path = "Tournament";
+        this.leaderTitle = "[Master]";
     }
 
     public void numberOfRounds(){
@@ -127,5 +128,14 @@ public class Tournament extends Multiplayer_engine {
             updatePlayerStats(player);
             File_Management.SavePlayer(player, this.path);
         }
+    }
+    @Override
+    public void GiveLeaderNickname(Player player){
+        if (IsLeader(player)){
+            return;
+        }
+        else if (player.winStreak >= 1){
+            player.nickName = leaderTitle + player.nickName;
+        } 
     }
 }

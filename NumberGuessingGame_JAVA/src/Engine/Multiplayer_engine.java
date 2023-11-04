@@ -7,10 +7,11 @@ import java.io.IOException;
 import java.util.*;
 
 public class Multiplayer_engine extends GameEngine {
-    
+
     protected String path = "Multiplayer";
     
     public Multiplayer_engine() {
+        
     }
 
     public void GetPlayers(){
@@ -43,7 +44,7 @@ public class Multiplayer_engine extends GameEngine {
     }
     private void whoStarts(){
         Random rdm = new Random();
-        int chosen = rdm.nextInt(0,players.length - 1);
+        int chosen = rdm.nextInt(0,players.length);
         if (chosen != 0){
             Player temp = players[0];
             players[0] = players[chosen];
@@ -56,11 +57,11 @@ public class Multiplayer_engine extends GameEngine {
         System.out.println(this.player.nickName + " Guess the number (" + range[0] + " <---> " + range[1] + ")");
         return player.checkIfWin(player.isCorrect(player.numberToGuess));
     }
-    /* 
+    
     @Override
     public void updatePlayers(ArrayList<Player> playersAfterGame) throws IOException {
         Player winner = playersAfterGame.get(0);
-        player.winStreak++;
+        winner.winStreak++;
         winner.Wins++;
         winner.GamesPlayed++;
         GiveLeaderNickname(player);
@@ -76,7 +77,7 @@ public class Multiplayer_engine extends GameEngine {
             File_Management.SavePlayer(player, this.path);
         }
     }
-    */
+    
     public ArrayList<Player> inGame(){
         ArrayList<Player> playersWhoGuessed = new ArrayList<>();
         while(playersWhoGuessed.size() != players.length) {
