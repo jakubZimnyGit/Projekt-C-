@@ -12,10 +12,11 @@ public class Player {       //Models.Player class
     public Integer Wins;
     public Integer Lost;
     public Integer GamesPlayed;
-    public Double WinRate;
+    public int roundsWon;
     public HashMap<String, String> PlayerStats;
     public int numberToGuess;
     public int score;
+    public Integer winStreak;
 
     public Player(){     // function that allows us to create object of type Models.Player
         this.nickName = "CPU";
@@ -23,9 +24,10 @@ public class Player {       //Models.Player class
         this.Wins = 0;
         this.Lost = 0;
         this.GamesPlayed = 0;
-        this.WinRate = 0.0;
         this.score = 1;
         PlayerStats  = new HashMap<>();
+        this.winStreak = 0;
+        this.roundsWon = 0;
     }
     public void Greetings()
     {
@@ -54,10 +56,10 @@ public class Player {       //Models.Player class
         }
         return 0;
     }
-    public int getNumberForBot(){
+    public void getNumberForBot(){
         Scanner scanner = new Scanner(System.in);
         System.out.println("Enter a number for the CPU to guess: ");
-        return scanner.nextInt();
+        this.numberToGuess = scanner.nextInt();
     }
 
     public boolean checkIfWin(boolean win){
@@ -91,7 +93,7 @@ public class Player {       //Models.Player class
         this.Wins = Integer.parseInt(this.PlayerStats.get("Wins"));
         this.Lost = Integer.parseInt(this.PlayerStats.get("Lost"));
         this.GamesPlayed = Integer.parseInt(this.PlayerStats.get("GamesPlayed"));
-        this.WinRate = Double.parseDouble(this.PlayerStats.get("WinRate"));
+        this.winStreak = Integer.parseInt(this.PlayerStats.get("winStreak"));
     }
 
 

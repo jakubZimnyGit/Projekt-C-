@@ -3,11 +3,13 @@ package Engine;
 import FilesManagement.File_Management;
 import Models.Player;
 
+import java.io.IOException;
 import java.util.*;
-import java.util.HashMap;
 
 public class Multiplayer_engine extends GameEngine {
-    private final String path = "Multiplayer";
+    
+    protected String path = "Multiplayer";
+    
     public Multiplayer_engine() {
     }
 
@@ -17,6 +19,7 @@ public class Multiplayer_engine extends GameEngine {
         this.players = new Player[Integer.parseInt(scanner.nextLine())];
         for (int i = 0; i < players.length; i++){
             players[i] = LogIn(i);
+            GiveLeaderNickname(players[i]);
         }
     }
 
@@ -27,7 +30,7 @@ public class Multiplayer_engine extends GameEngine {
         this.player = new Player();
         player.nickName = nick;
         player.PlayerStats.put("name", nick);
-        player.loadMultiplayer(this.path);
+        player.loadMultiplayer(path);
         return player;
     }
     @Override
@@ -53,42 +56,56 @@ public class Multiplayer_engine extends GameEngine {
         System.out.println(this.player.nickName + " Guess the number (" + range[0] + " <---> " + range[1] + ")");
         return player.checkIfWin(player.isCorrect(player.numberToGuess));
     }
-
-    public void updatePlayers(ArrayList<Player> playersAfterGame){
+    /* 
+    @Override
+    public void updatePlayers(ArrayList<Player> playersAfterGame) throws IOException {
         Player winner = playersAfterGame.get(0);
+        player.winStreak++;
         winner.Wins++;
         winner.GamesPlayed++;
-        winner.WinRate = ((Double.valueOf(winner.Wins) / Double.valueOf(winner.GamesPlayed)) * 100);
+        GiveLeaderNickname(player);
         for (int i = 1; i < playersAfterGame.size(); i++){
             Player player = playersAfterGame.get(i);
             player.Lost++;
+            player.winStreak = 0;
             player.GamesPlayed++;
-            player.WinRate = ((Double.valueOf(winner.Wins) / Double.valueOf(winner.GamesPlayed)) * 100);
+            RemoveLeaderNickname(player);
         }
         for (Player player : playersAfterGame){
             updatePlayerStats(player);
             File_Management.SavePlayer(player, this.path);
         }
     }
-    public void Game(){
-        boolean gameOn = true;
-        while(gameOn){
-            this.SetupGame();
-            ArrayList<Player> playersWhoGuessed = new ArrayList<>();
-            while(playersWhoGuessed.size() != players.length) {
-                for (Player currentPlayer : players) {
-                    this.player = currentPlayer;
-                    if (!playersWhoGuessed.contains(currentPlayer)) {
-                        if (this.PlayerGuessNumber()) {
-                            playersWhoGuessed.add(currentPlayer);
-                        }
+    */
+    public ArrayList<Player> inGame(){
+        ArrayList<Player> playersWhoGuessed = new ArrayList<>();
+        while(playersWhoGuessed.size() != players.length) {
+            for (Player currentPlayer : players) {
+                this.player = currentPlayer;
+                if (!playersWhoGuessed.contains(currentPlayer)) {
+                    if (this.PlayerGuessNumber()) {
+                        playersWhoGuessed.add(currentPlayer);
                     }
                 }
             }
-            System.out.println(playersWhoGuessed.get(0).nickName + "is a winner!");
-            updatePlayers(playersWhoGuessed);
-            gameOn = GameOn();
+        }
+        return playersWhoGuessed;
+    }
+
+    public void Game() throws IOException {
+        boolean gameOn = true;
+        while(gameOn){
+            SetupGame();
+            ArrayList<Player> playersWhoGuessed = inGame();
+          gameOn = GameEnd(playersWhoGuessed);
         }
     }
+    public boolean GameEnd(ArrayList<Player> playersWhoGuessed) throws IOException {
+        System.out.println(playersWhoGuessed.get(0).nickName + " is a winner!");
+        updatePlayers(playersWhoGuessed);
+        return GameOn();
+    }
+    
+
 
 }

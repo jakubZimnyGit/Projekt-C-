@@ -38,4 +38,9 @@ public class Bot extends Player {
         }
         return 0;
     }
+    public void setRange(int [] rangeInGame){
+        this.range = new int[2];
+        this.range[0] = rangeInGame[0];
+        this.range[1] = rangeInGame[1];
+    }
 }

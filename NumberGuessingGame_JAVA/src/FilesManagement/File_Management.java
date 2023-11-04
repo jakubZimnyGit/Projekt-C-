@@ -1,15 +1,19 @@
 package FilesManagement;
 
+
 import Models.Player;
 
 import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.*;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 
 public class File_Management {      //Class that handles all operations on files
 
-    public static void SavePlayer(Player player, String path) {     //saving player's nickname to file
+    public static void SavePlayer(Player player, String path) throws IOException {
+        Files.createDirectories(Paths.get(path));
         BufferedWriter writer;
         File file = new File("./" + path + "/" + player.nickName + ".txt");
         try {

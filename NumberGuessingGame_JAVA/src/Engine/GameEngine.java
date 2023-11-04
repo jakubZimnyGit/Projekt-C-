@@ -1,6 +1,7 @@
 package Engine;
 
-import java.io.File;
+import java.io.Console;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -11,8 +12,7 @@ public class GameEngine {
     protected Player[] players;
     protected String path;
     protected int [] range = new int[2];
-    protected int score;
-
+    private String leaderTitle = "[LEADER]";
 
 
     void difficulty() {
@@ -58,7 +58,7 @@ public class GameEngine {
         player.Greetings();
         System.out.println("Your best score is " + this.player.PersonalBest);
     }
-    public static void optionChoice(String choice){
+    public static void optionChoice(String choice) throws IOException {
         switch (choice) {
             case "1":
                 Singleplayer_Engine single = new Singleplayer_Engine();
@@ -70,8 +70,13 @@ public class GameEngine {
                 break;
             case "3":
                 vsCPU vsProgram= new vsCPU();
+                vsProgram.Game();
                 break;
             case "4":
+                Tournament tournament = new Tournament();
+                tournament.Game();
+                break;
+            case "5":
                 System.exit(0);
                 break;
         }
@@ -86,8 +91,9 @@ public class GameEngine {
         player.PlayerStats.put("Wins", player.Wins.toString());
         player.PlayerStats.put("Lost", player.Lost.toString());
         player.PlayerStats.put("GamesPlayed", player.GamesPlayed.toString());
-        player.PlayerStats.put("WinRate", player.WinRate.toString());
+        player.PlayerStats.put("winStreak", player.winStreak.toString());
     }
+
     Boolean GameOn() {
         Scanner scanner = new Scanner(System.in);
         System.out.println("Continue?: \n1. Yes\n2. No");
@@ -97,16 +103,18 @@ public class GameEngine {
             default -> false;
         };
     }
-    public void updatePlayers(ArrayList<Player> playersAfterGame){
+    public void updatePlayers(ArrayList<Player> playersAfterGame) throws IOException {
         Player winner = playersAfterGame.get(0);
+        player.winStreak++;
         winner.Wins++;
         winner.GamesPlayed++;
-        winner.WinRate = ((Double.valueOf(winner.Wins) / Double.valueOf(winner.GamesPlayed)) * 100);
+        GiveLeaderNickname(player);
         for (int i = 1; i < playersAfterGame.size(); i++){
             Player player = playersAfterGame.get(i);
             player.Lost++;
+            player.winStreak = 0;
             player.GamesPlayed++;
-            player.WinRate = ((Double.valueOf(winner.Wins) / Double.valueOf(winner.GamesPlayed)) * 100);
+            RemoveLeaderNickname(player);
         }
         for (Player player : playersAfterGame){
             updatePlayerStats(player);
@@ -116,5 +124,31 @@ public class GameEngine {
     public boolean PlayerGuessNumber(){
         System.out.println("Guess the number (" + range[0] + " <---> " + range[1] + ")");
         return player.checkIfWin(player.isCorrect(player.numberToGuess));
+    }
+    public void GiveLeaderNickname(Player player){
+        if (IsLeader(player)){
+            return;
+        }
+        else if (player.winStreak >= 3){
+            player.nickName = leaderTitle + player.nickName;
+        } 
+    }
+    public void RemoveLeaderNickname(Player player){
+        if (IsLeader(player)) {
+            player.nickName = player.nickName.substring(8,player.nickName.length());
+        }
+    }
+    public boolean IsLeader(Player player){  
+        try {
+            System.out.println(player.nickName.substring(8,player.nickName.length()));
+            String substring = player.nickName.substring(0, 8);
+           if (substring.equals(leaderTitle)){
+            return true;
+        } 
+        } catch (Exception StringIndexOutOfBoundsException) {
+            return false;
+        }
+        return false;
+
     }
 }
