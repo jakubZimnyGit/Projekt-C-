@@ -1,0 +1,5 @@
+Lost:0
+name:justyna
+winStreak:1
+Wins:1
+GamesPlayed:1

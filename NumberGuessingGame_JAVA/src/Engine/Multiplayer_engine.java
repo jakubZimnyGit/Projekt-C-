@@ -8,10 +8,9 @@ import java.util.*;
 
 public class Multiplayer_engine extends GameEngine {
 
-    protected String path = "Multiplayer";
     
     public Multiplayer_engine() {
-        
+        super.path = "Multiplayer";
     }
 
     public void GetPlayers(){

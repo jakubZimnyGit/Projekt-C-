@@ -13,10 +13,10 @@ public class Tournament extends Multiplayer_engine {
 
     
     private int rounds;
-    private HashMap<String, Integer> playersScores;
+    protected HashMap<String, Integer> playersScores;
 
     public Tournament(){
-        this.path = "Tournament";
+        super.path = "Tournament";
         this.leaderTitle = "[Master]";
     }
 
@@ -35,7 +35,7 @@ public class Tournament extends Multiplayer_engine {
         
     }
 
-    private HashMap<String, Integer> SetPlayersTable(Player [] players){
+    public HashMap<String, Integer> SetPlayersTable(Player [] players){
         HashMap<String, Integer> playersScores = new HashMap<String, Integer>();
         for (Player player : players){
             playersScores.put(player.nickName, player.roundsWon);
@@ -77,7 +77,7 @@ public class Tournament extends Multiplayer_engine {
             gameOn = GameEnd(playersWhoGuessed);
         }   
     }
-    private void displayScore(){
+    public void displayScore(){
         System.out.print("\n##########   ");
         for (Player player : players){
             System.out.print(player.nickName  + ": "+ player.roundsWon + "   ");
@@ -85,12 +85,12 @@ public class Tournament extends Multiplayer_engine {
         System.out.print("   ##########\n");
     }
 
-    private void newNumbersToGuess(Player [] players){
+    public void newNumbersToGuess(Player [] players){
         for (Player player : players){
             player.RandomNumber(range);
         }
     }
-    private boolean WinnerOfTheRound(ArrayList<Player> playersWhoGuessed) {
+    public boolean WinnerOfTheRound(ArrayList<Player> playersWhoGuessed) {
         Player winner = playersWhoGuessed.get(0);
         System.out.print(winner.nickName + " wins this round! ");
         winner.roundsWon ++;
@@ -130,15 +130,7 @@ public class Tournament extends Multiplayer_engine {
             File_Management.SavePlayer(player, this.path);
         }
     }
-    @Override
-    public void GiveLeaderNickname(Player player){
-        if (IsLeader(player)){
-            return;
-        }
-        else if (player.winStreak >= 1){
-            player.nickName = leaderTitle + player.nickName;
-        } 
-    }
+    
     public void displayPodium(ArrayList<Player> playersWhoGuessed){
         try {
             for (int i = 0; i < 3; i++){

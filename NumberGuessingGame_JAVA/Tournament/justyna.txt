@@ -1,5 +1,0 @@
-Lost:2
-name:justyna
-winStreak:0
-Wins:0
-GamesPlayed:2

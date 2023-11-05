@@ -1,6 +1,5 @@
 package Engine;
 
-import java.io.Console;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Scanner;
@@ -58,25 +57,29 @@ public class GameEngine {
         player.Greetings();
         System.out.println("Your best score is " + this.player.PersonalBest);
     }
-    public static void optionChoice(String choice) throws IOException {
+    public static void optionChoice(int choice) throws IOException {
         switch (choice) {
-            case "1":
+            case 1:
                 Singleplayer_Engine single = new Singleplayer_Engine();
                 single.Game();
                 break;
-            case "2":
+            case 2:
                 Multiplayer_engine Multi = new Multiplayer_engine();
                 Multi.Game();
                 break;
-            case "3":
+            case 3:
                 vsCPU vsProgram= new vsCPU();
                 vsProgram.Game();
                 break;
-            case "4":
+            case 4:
                 Tournament tournament = new Tournament();
                 tournament.Game();
                 break;
-            case "5":
+            case 5:
+                TournamentV2 bigTournament = new TournamentV2();
+                bigTournament.game();
+                break;
+            case 6:
                 System.exit(0);
                 break;
         }
@@ -95,11 +98,9 @@ public class GameEngine {
     }
 
     Boolean GameOn() {
-        Scanner scanner = new Scanner(System.in);
-        System.out.println("Continue?: \n1. Yes\n2. No");
-        String choice = scanner.nextLine();
+        int choice = IntegerInputValidation("Continue?: \n1. Yes\n2. No");
         return switch (choice) {
-            case "1" -> true;
+            case 1 -> true;
             default -> false;
         };
     }
@@ -108,7 +109,7 @@ public class GameEngine {
         player.winStreak++;
         winner.Wins++;
         winner.GamesPlayed++;
-        GiveLeaderNickname(player);
+        RemoveLeaderNickname(player);
         for (int i = 1; i < playersAfterGame.size(); i++){
             Player player = playersAfterGame.get(i);
             player.Lost++;
@@ -150,5 +151,30 @@ public class GameEngine {
         }
         return false;
 
+    }
+    public Integer IntegerInputValidation(String message){
+        
+        while (true) {   
+            System.out.println(message);
+            Scanner scanner = new Scanner(System.in);
+            try {
+                Integer input = scanner.nextInt();
+                return input;
+            } catch (Exception e) {
+                System.out.println("Invalid input, try again");
+            }
+        }
+    }
+    public String StringInputValidation(String message){
+        while (true) {  
+            Scanner scanner = new Scanner(System.in); 
+            System.out.println(message);
+            try {
+                String input = scanner.nextLine();
+                return input;
+            } catch (Exception e) {
+                System.out.println("Invalid input, try again");
+            }
+        }
     }
 }
